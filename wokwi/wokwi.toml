@@ -1,0 +1,5 @@
+[wokwi]
+version = 1
+firmware = 'build/your_app.bin'
+elf = 'build/your_app.elf'
+gdbServerPort = 3333

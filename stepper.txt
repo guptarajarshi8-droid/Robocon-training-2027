@@ -1,0 +1,16 @@
+int step=10;
+int dir=11;
+void setup()
+{
+  pinMode(step,OUTPUT);
+  pinMode(dir,OUTPUT);
+  digitalWrite(dir,LOW);
+}
+
+void loop()
+{
+  digitalWrite(step,HIGH);
+  delay(10);
+  digitalWrite(step,LOW);
+  delay(10);
+}
