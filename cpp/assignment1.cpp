@@ -64,7 +64,7 @@ int main()
     cout << "Minimum reading: " << minReading << " cm" << endl;
     cout << "Average reading: " << average << " cm" << endl;
     cout << "Readings below 20 cm: " << countBelow20 << endl;
-    cout << "Readings above 100 cm: " << countAbove100 << endl;
+    cout << "Readings above 100 cm: " << countAbove100 << ;
 
     return 0;
 }
