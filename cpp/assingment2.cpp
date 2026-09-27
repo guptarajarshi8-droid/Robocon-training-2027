@@ -44,7 +44,5 @@ int main()
             cout << "Digit " << i << " appears " << digitCounts[i] << " times." << endl;
         }
     }
-
-
     return 0;
 }
