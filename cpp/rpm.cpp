@@ -12,11 +12,5 @@ int main() {
         cin >> rpm[i];
         
     }    
-    for(int i=0;i<n;i++)
-    {
-        cout<<endl<<"Marks of trial"<<(i+1)<<":";
-        cout<< rpm[i];
-        
-    }    
     return 0;
 }
