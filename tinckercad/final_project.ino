@@ -1,3 +1,5 @@
+#include <Servo.h>
+
 #include <Adafruit_LiquidCrystal.h>
 
  
@@ -9,7 +11,6 @@
   const int echo_L=13;
   const int echo_R=1;
   long duration;
-  int distance;
   const int pot=A0;
   const int en1=3;
   const int in1=2;
@@ -20,6 +21,7 @@
   const int en3=10;
   const int in5=5;
   const int in6=7;
+  Servo s1;
 
 //Ultrasonic sensor 
 class Ultrasonic 
@@ -31,13 +33,13 @@ public:
   { 
     pinMode(trig, OUTPUT); pinMode(echo, INPUT); 
   }
-  int cm()
+  int distance()
   {
     digitalWrite(trig, LOW); 
     delayMicroseconds(2);
     digitalWrite(trig, HIGH); delayMicroseconds(10);
     digitalWrite(trig, LOW);
-    int duration = pulseIn(echo, HIGH);
+    int duration = pulseIn(echo, HIGH,25000);
     return (duration == 0) ? 400 : (int)(duration * 0.0343 / 2);
   }
 };
@@ -120,30 +122,24 @@ public:
 
   void update() {
     spd = map(analogRead(pot), 0, 1023, 0, 255);   // pot = rear motor speed
-    l = sl.cm();
-    c = sc.cm();
-    r = sr.cm();
+    l = sl.distance();
+    c = sc.distance();
+    r = sr.distance();
 
-    if (l < STOP_CM && c < STOP_CM && r < STOP_CM) 
+    if (c < STOP_CM) 
     {                              // blocked ahead
-      disp.show(l, c, r, spd, "STUCK");
-      rear.stop();
-      if (c < STOP_CM) 
-     {                              // blocked all side
       steerStraight();
       disp.show(l, c, r, spd, "REVERSE");
       rear.run(-spd);
       delay(400);
       rear.stop();
-     
-     }
                            
-      else if (l < r)   // turn toward the clearer side
+      if (l > r)   // turn toward the clearer side
         steerLeft(); 
       else 
       {
         steerRight();
-        disp.show(l, c, r, spd, l<r ? "TURN L" : "TURN R");
+        disp.show(l, c, r, spd, l > r ? "TURN L" : "TURN R");
         rear.run(spd);
         delay(500);
         steerStraight();
@@ -173,7 +169,7 @@ public:
   }
 };
 
-// ---------- Globals ----------
+//Object creation for each part
 Ultrasonic sonarL(trig_L, echo_L), sonarC(trig, echo_C), sonarR(trig,echo_R);
 Motor rearMotor(en1, in1, in2, true);
 Motor frontLeft(en2, in3, in4, true);
@@ -192,4 +188,3 @@ void loop()
 {
   car.update();
 }
-
